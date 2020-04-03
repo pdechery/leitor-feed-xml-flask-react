@@ -3,61 +3,16 @@
 from flask import Flask, jsonify
 import requests
 from requests.exceptions import HTTPError
-import xml.etree.ElementTree as ET
 import html
-from html.parser import HTMLParser
-
-class parseItemContent(HTMLParser):
-
-    def __init__(self):
-        HTMLParser.__init__(self)
-        
-        self.ps, self.imgs, self.uls = [], [], []
-        self.getP, self.getUl, self.getImg = 0, 0, 0
-
-        self.data = {
-            'ps': self.ps,
-            'imgs': self.imgs,
-            'uls': self.uls
-        }
-
-    def handle_starttag(self, tag, attrs):
-        if (tag == 'p'):
-            self.ps.append('<p>')
-            self.getP = 1
-        elif(tag == 'img'):
-            for attr in attrs:
-                if(attr[0] == 'src'):
-                    self.imgs.append(attr[1])
-        elif(tag == 'li'):
-            self.getUl = 1
-        elif(tag == 'a'):
-            if(self.getUl):
-                self.uls.append(attrs[0][1])
-        else:
-            return
-
-    def handle_endtag(self, tag):
-        if (tag == 'p'):
-            self.ps.append('</p>')
-            self.getP = 0
-        elif(tag == 'li'):
-            self.getUl = 0
-        else:
-            return
-
-    def handle_data(self, data):
-        if(self.getP):
-            nospace = data.strip()
-            self.ps.append(nospace)
-        else:
-            return
+import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
+#from htmlparser import parseItemContent
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 @app.route('/')
-def get():
+def getContent():
     try:
             
         response = requests.get('https://revistaautoesporte.globo.com/rss/ultimas/feed.xml')
@@ -67,30 +22,57 @@ def get():
         
         items = parsedXml.findall('./channel/item')
 
-        feed = []
-        dictFinal = {}
+        response = {'feed':[]}
 
         for item in items:
             
-            newItem = {}
+            nItem = {}
 
-            txtBase = item.find('description').text
+            ContentMarkup = item.find('description').text
 
-            parser = parseItemContent()
-            parser.feed(html.unescape(txtBase))
+            # parseando o HTML do conteúdo com biblioteca externa
+            soup = BeautifulSoup(ContentMarkup, 'html.parser')
+
+            for tag in soup.find_all(True):
+                #print(type(tag))
+                #print(tag.name)
+                if(tag.name == 'p'):
+                    #print(type(tag.string))
+                    #print(tag.contents)
+                    print(str(tag))
+                elif(tag.name == 'img'):
+                    if(tag.find_parent("div")):
+                        print(tag['src'])
+                elif(tag.name)
             
-            clearString = ' '.join(parser.data['ps'])
-            parser.data.update({'ps' : clearString})
+            # paragraphs = [str(p) for p in soup.find_all('p')]
+            # images = [img['src'] for img in soup.select("div.foto > img")]
+            # links = [link['href'] for link in soup.select("ul li > a")]
 
-            newItem['title'] = item.find('title').text
-            newItem['description'] = parser.data
-            newItem['link'] = item.find('link').text
+            paragraphs = ' '.join(paragraphs)
 
-            feed.append({'item': newItem })
-            
-        dictFinal['feed'] = feed
+            description = []
 
-        return jsonify(dictFinal)
+            nItem['title'] = item.find('title').text
+            nItem['link'] = item.find('link').text
+            nItem['description'] = [
+                {
+                    'type': 'text',
+                    'content' : paragraphs
+                },
+                {
+                    'type': 'image',
+                    'content' : images
+                },
+                {
+                    'type': 'links',
+                    'content': links
+                }
+            ]
+
+            response['feed'].append({'item': nItem })
+
+        return jsonify(response)
     
     except HTTPError as http_err:
         print('Cool Exception')
@@ -100,4 +82,5 @@ def get():
         print(err)
  
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    #app.run(debug=True, host='0.0.0.0')
+    print(getContent())
