@@ -1,0 +1,10 @@
+version: '2.0'
+
+services:
+   app:
+     build: .
+     ports:
+      - 1337:80
+     volumes:
+      - .:/app/:rw
+      - ./nginx.conf:/etc/nginx/sites-enabled/default/:rw

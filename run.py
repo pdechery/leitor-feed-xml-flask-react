@@ -1,14 +1,22 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response, render_template
 import requests
 from requests.exceptions import HTTPError
 import html
 import xml.etree.ElementTree as ET
 from htmlparser import parseItemContent
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config['JSON_AS_ASCII'] = False
+
+@app.after_request
+def after_request(response):
+    print(response)
+    response.headers.add('Access-Control-Allow-Origin','*')
+    response.headers.add('Access-Control-Allow-Headers','Content-Type')
+    response.headers.add('Access-Control-Allow-Methods','GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 @app.route('/app/feed')
 def get():
@@ -42,6 +50,10 @@ def get():
         print(f'HTTP error occurred: {http_err}')
     except Exception as err:
         print(err)
+
+@app.route('/')
+def getIndex():
+    return render_template('index.html', data={})
  
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

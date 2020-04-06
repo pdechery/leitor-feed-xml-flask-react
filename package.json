@@ -1,0 +1,15 @@
+{
+  "name": "desafio-back-end-globo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "less": "less-watch-compiler ./assets/less ./static/css styles.less"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "less-watch-compiler": "^1.14.6"
+  }
+}
