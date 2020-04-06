@@ -10,14 +10,6 @@ from htmlparser import parseItemContent
 app = Flask(__name__, template_folder='templates')
 app.config['JSON_AS_ASCII'] = False
 
-@app.after_request
-def after_request(response):
-    print(response)
-    response.headers.add('Access-Control-Allow-Origin','*')
-    response.headers.add('Access-Control-Allow-Headers','Content-Type')
-    response.headers.add('Access-Control-Allow-Methods','GET,PUT,POST,DELETE,OPTIONS')
-    return response
-
 @app.route('/app/feed')
 def get():
     try:

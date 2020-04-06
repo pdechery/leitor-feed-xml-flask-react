@@ -32,8 +32,8 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    fetch('http://'+window.location.host+'/app/feed', {
-      mode:'cors'
+    fetch('/app/feed', {
+      mode:'no-cors'
     })
     .then(res => res.json())
     .then((data) => {
