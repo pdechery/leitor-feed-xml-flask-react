@@ -76,6 +76,16 @@ h1:after {
   padding: 1em 3em;
   box-sizing: border-box;
 }
+#root p:first-child {
+  float: right;
+  font-weight: 700;
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+}
+#root p:first-child a {
+  color: #2d79b7;
+}
 #root .item {
   padding-bottom: 2em;
   padding-right: 4em;
@@ -85,6 +95,7 @@ h1:after {
 #root .item h4 {
   font-size: 1.2em;
   font-weight: 700;
+  margin: 1em 0 0 ;
 }
 #root .item ul {
   margin-top: 2em;
@@ -92,4 +103,42 @@ h1:after {
 }
 #root .item ul li {
   margin-bottom: 0.5em;
+}
+#root .item.ultimo {
+  border-bottom: none;
+}
+form {
+  width: 30%;
+  margin-bottom: 2em;
+}
+form .hidden {
+  display: none;
+}
+form .warning {
+  padding: 1em 0;
+  font-weight: 700;
+  color: red;
+}
+form input[type=text],
+form input[type=password] {
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 100%;
+  padding: 0.3em 0.3em;
+  line-height: 1.2em;
+  font-size: 1.4em;
+  color: #666;
+  margin-bottom: 1em;
+}
+form input[type=submit] {
+  cursor: pointer;
+  border-radius: 0.4em;
+  padding: 12px 14px;
+  font-size: 1em;
+  font-weight: 900;
+  line-height: 1.2em;
+  border: none;
+  color: #fff;
+  background-color: #2d79b7;
+  border-color: #2d79b7;
 }

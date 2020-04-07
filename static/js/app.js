@@ -1,16 +1,27 @@
 'use strict';
 
-const Item = ({ items }) => {
+const Feed = ({ items, token }) => {
+  const len = items.length - 1; 
   return (
     <div>
+      <p>
+        <a href={"/app/feed?token="+token} target="_blank">
+          Ver JSON
+        </a>
+      </p>
       {items.map((item, index) => (
-        <div key={index} className="item">
-          <h4>{item.title}</h4>
-          <p>Link: {item.link}</p>
+        <div key={index} className={'item ' + (index == len ? 'ultimo' : '')}>
+          <h4>Título</h4>
+          <p>{item.title}</p>
+          <h4>Link</h4>
+          <p>{item.link}</p>
+          <h4>Conteúdo texto</h4>
           <div dangerouslySetInnerHTML={{ __html: item.text }} />
+          <h4>Links Texto</h4>
           <ul>
             { item.descLinks.map((link, index) => <li key={index}> {link} </li>) }
           </ul>
+          <h4>Imagens Texto</h4>
           <ul>
             { item.descImages.map((img, index) => <li key={index}> {img} </li>) }
           </ul>
@@ -22,21 +33,34 @@ const Item = ({ items }) => {
 
 class App extends React.Component {
   
-  state = {
-    items: []
+  constructor(props){
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      items: [],
+      'token': '',
+      'authorize': false,
+      'authorizeFail': false
+    }
   }
 
-  test(){
-    //console.log(this.state.items);
-    //console.log(window.location.host);
-  }
-
-  componentDidMount(){
-    fetch('/app/feed', {
+  doFetchFeed(token){
+    fetch('/app/feed?token='+token, {
       mode:'no-cors'
     })
-    .then(res => res.json())
-    .then((data) => {
+    .then(res => {
+      if(!res.ok) {
+          if (res.status==401) {
+            this.setState({authorize: false})
+            throw {
+                'statusCode': 401,
+                'message': "Falta o token"
+            };
+          }
+      }
+      return res.json();
+    })
+    .then(data => {
 
       let feed = [];
       
@@ -74,21 +98,60 @@ class App extends React.Component {
         feed.push(itemObj);
 
         this.setState({
-          'items': feed
-        });
+          'items': feed,
+          'token': token
+        });        
       
       })
 
     })
     .catch((error) => {
-      console.error('Error:', error);
+      console.log(error);
+    });
+  }
+
+  handleSubmit(ev) {
+    ev.preventDefault();
+    let formData = new FormData(ev.target);
+    fetch('/login', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => {
+      if(!res.ok) {
+          if (res.status==401) {
+            this.setState({authorizeFail: true})
+          }
+          throw {
+              'statusCode': 401,
+              'message': "Usuário não encontrado"
+          };
+      }
+      return res.json();
+    })
+    .then(data => {
+      this.setState({authorize: true});
+      this.doFetchFeed(data.access_token);
+    })
+    .catch((error) => {
+      console.log(error);
     });
   }
 
   render () {
-    //this.test();
+    if(!this.state.authorize) {
+        return (
+            <form id="login" onSubmit={this.handleSubmit}>
+              <h2>Login</h2>
+              <div className={ this.state.authorizeFail ? "warning" : "warning hidden" }>O usuário não foi encontrado</div>
+              <input type="text" name="username" placeholder="Seu username" />
+              <input type="password" name="password" placeholder="Sua senha" />
+              <input type="submit" value="Submit" />
+            </form>
+        )
+    }
     return (
-      <Item items={this.state.items} />
+      <Feed items={this.state.items} token={this.state.token} />
     );
   }
 }
