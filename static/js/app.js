@@ -35,7 +35,6 @@ class App extends React.Component {
   
   constructor(props){
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       items: [],
       'token': '',
@@ -110,7 +109,7 @@ class App extends React.Component {
     });
   }
 
-  handleSubmit(ev) {
+  handleSubmit = (ev) => {
     ev.preventDefault();
     let formData = new FormData(ev.target);
     fetch('/login', {
