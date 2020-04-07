@@ -76,14 +76,14 @@ h1:after {
   padding: 1em 3em;
   box-sizing: border-box;
 }
-#root p:first-child {
+#root > div > p {
   float: right;
   font-weight: 700;
   font-size: 1.2em;
   margin: 0;
   padding: 0;
 }
-#root p:first-child a {
+#root > div > p a {
   color: #2d79b7;
 }
 #root .item {
