@@ -33,7 +33,7 @@ Na raiz do diretório gerado executar:
 
 Em seguida acessar http://localhost:5000
 
-Favor atentar para os requisitos de cada uma das formas de execução (ter Python 3 instalado ou Docker).
+Favor atentar para os requisitos de cada uma das formas de execução (ter Python 3 instalado ou Docker e Docker Compose).
 
 ### A tela
 
