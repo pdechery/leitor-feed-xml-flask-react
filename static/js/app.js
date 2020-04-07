@@ -11,17 +11,17 @@ const Feed = ({ items, token }) => {
       </p>
       {items.map((item, index) => (
         <div key={index} className={'item ' + (index == len ? 'ultimo' : '')}>
-          <h4>Título</h4>
+          <h4>Title</h4>
           <p>{item.title}</p>
           <h4>Link</h4>
           <p>{item.link}</p>
-          <h4>Conteúdo texto</h4>
+          <h4>Description Text</h4>
           <div dangerouslySetInnerHTML={{ __html: item.text }} />
-          <h4>Links Texto</h4>
+          <h4>Description Links</h4>
           <ul>
             { item.descLinks.map((link, index) => <li key={index}> {link} </li>) }
           </ul>
-          <h4>Imagens Texto</h4>
+          <h4>Description Images</h4>
           <ul>
             { item.descImages.map((img, index) => <li key={index}> {img} </li>) }
           </ul>

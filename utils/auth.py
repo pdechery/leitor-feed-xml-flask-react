@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 class Auth():
 	def __init__(self):
-		# todo criar hash de verdade
 		self.hashjwt = "7263723672sdsd9"
 
 	def generate_auth_token(self, data, exp=30, time_exp=False):

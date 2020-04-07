@@ -64,7 +64,6 @@ def get():
 
 @app.route('/login', methods=['POST'])
 def doLogin():
-        
     if(request.form['username'] == config['username'] and request.form['password'] == config['password']):
         auth = Auth()
         data = {
