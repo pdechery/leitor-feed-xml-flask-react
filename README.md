@@ -28,7 +28,7 @@ Executar *docker-compose up* na raiz do diretório gerado e após o *build* aces
 
 Na raiz do diretório gerado executar:
 
-1. *pip install*
+1. *pip install -r requirements.txt*
 2. *python run.py*
 
 Em seguida acessar http://localhost:5000
@@ -37,6 +37,11 @@ Favor atentar para os requisitos de cada uma das formas de execução (ter Pytho
 
 ### A tela
 
-A tela gerada irá exibir os dados do feed em HTML. Para ver os dados em JSON no formato pedido no desafio basta clicar no link "Ver JSON", no canto direito da tela. 
+Ao acessar, será pedido um login. O usuário e senha são:
+
+*desafio*
+*backend*
+
+Após a autenticação serão exibidos os dados do feed em HTML. Para visualização em JSON, como pedido no desafio, basta clicar no link "Ver JSON", no canto direito da tela.
 
 Dica: rodando em Flask o JSON ficará melhor formatado. Com o Docker, recomendo usar um formatador de JSON online, como o https://jsonformatter.curiousconcept.com/ ou o console do Chrome ou Firefox.
