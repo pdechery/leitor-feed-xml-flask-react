@@ -6,7 +6,7 @@ http://revistaautoesporte.globo.com/rss/ultimas/feed.xml
 
 ### Tecnologias utilizadas
 
-**Backend**
+**Back-end**
 
 *  Python 3.6
 *  Flask 1.1 
@@ -39,7 +39,7 @@ Favor atentar para os requisitos de cada uma das formas de execução (ter Pytho
 
 Ao acessar, será pedido um login. O usuário e senha são:
 
-> desafio
+> desafio  
 > backend
 
 Após a autenticação serão exibidos os dados do feed em HTML. Para visualização em JSON, como pedido no desafio, basta clicar no link "Ver JSON", no canto direito da tela.
