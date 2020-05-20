@@ -1,4 +1,4 @@
-## Desafio Back-End
+## Leitor Feed XML
 
 Este app implementa uma visualização do *feed* disponível em:
 
